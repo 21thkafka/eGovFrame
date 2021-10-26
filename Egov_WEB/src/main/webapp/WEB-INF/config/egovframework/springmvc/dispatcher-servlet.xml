@@ -66,16 +66,30 @@
 
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
     
+ 
     <!-- AOP -->
     <!-- bean 등록 -->
 	<bean id="exampleAop" class="egov.lib.util.ExampleAop"/>
-	
+	<aop:aspectj-autoproxy/>
+
 	<!-- Aspect 설정 -->
-	<aop:config>
+<!-- 	<aop:config>
 		<aop:aspect ref="exampleAop">
 			<aop:pointcut id="targetExample" expression="execution(* egov.**.web.*Controller.*(..))" />
+			<aop:before pointcut-ref="targetExample" method="beforeMethod" />
 			<aop:after-throwing pointcut-ref="targetExample" method="afterExceptionMethod"  throwing="exception" />
 		</aop:aspect>
-	</aop:config>
+		
+		<aop:aspect ref="exampleAop">
+			<aop:pointcut id="targetExample2" expression="execution(* egov.**.web.*Controller.*(..))" />
+			<aop:after pointcut-ref="targetExample2" method="afterMethod" />
+		</aop:aspect>
+		
+		<aop:aspect ref="exampleAop">
+			<aop:pointcut id="targetExample3" expression="execution(* egov.**.web.*Controller.*(..))" />
+			<aop:around pointcut-ref="targetExample3" method="aroundMethod" />
+		</aop:aspect>
+	
+	</aop:config> -->
     <!-- /AOP -->
 </beans>

@@ -9,7 +9,7 @@
 	    <!-- 24Hour: new file -->
 	    <!-- 250MB: new file -->
 	    <RollingFile name="RollingFile" fileName="c:/logger/app.log"
-	                 filePattern="c:/logs/$${date:yyyy-MM}/logger-%d{yyyy-MM-dd-HH}-%i.log.gz">
+	                 filePattern="c:/logger/$${date:yyyy-MM}/logger-%d{yyyy-MM-dd-HH}-%i.log.gz">
 	      <PatternLayout>
 	        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
 	      </PatternLayout>

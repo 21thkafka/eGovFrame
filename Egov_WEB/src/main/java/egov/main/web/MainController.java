@@ -91,7 +91,7 @@ public class MainController {
 	@RequestMapping(value = "/loginSubmission.do")
 	public String loginSubmission(HttpServletRequest request,ModelMap model) throws Exception
 	{
-		String userId = request.getParameter("id").toString();
+		String userId = request.getParameter("id").toString(); // 사용자의 아이디를 받음
 		
 		//길이가 10초과일 경우
 		if(userId.length()>10)
@@ -102,7 +102,7 @@ public class MainController {
 		HashMap<String,Object> paramMap = new HashMap<String,Object>();
 		//HashMap<String,Object> resultMap = new HashMap<String,Object>();
 		
-		paramMap.put("userId", userId);
+		paramMap.put("userId", userId);		//paramMap에 사용자에게 요청한 값을 넣어 데이터베이스에 조청함
 		paramMap.put("ref_cursor", null);
 		
 		mainService.selectLogin2(paramMap);
@@ -134,6 +134,6 @@ public class MainController {
 	@RequestMapping(value = "/exception.do")
 	public String exception(HttpServletRequest request,ModelMap model) throws Exception
 	{
-		throw new Exception("에러발생");
+		throw new Exception("사용자 임의의 에러발생");
 	}
 }

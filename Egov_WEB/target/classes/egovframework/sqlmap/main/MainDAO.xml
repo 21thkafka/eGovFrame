@@ -14,15 +14,15 @@
    </select>
    
    <!-- 메인항목 불러오기-->
-   <select id="selectLogin" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="selectLogin" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
    SELECT 
    USER_ID AS USER_ID
    FROM EGOV_USER
-   where USER_ID= #{userId}
+   where USER_ID = #{userId}
    </select>
    
    <!-- 메인항목 불러오기-->
-   <select id="selectLogin2" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+<select id="selectLogin2" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
    { CALL web_main.selectLogin(#{userId},#{ref_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=oracleResultMap})}
    </select>
 
