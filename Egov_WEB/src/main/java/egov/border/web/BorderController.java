@@ -85,51 +85,41 @@ public class BorderController {
 	@RequestMapping(value="/borderList.do")
 	public String borderList(HttpServletRequest request,ModelMap model) throws Exception
 	{
-		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
-		HashMap<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap.put("ref_cursor",null);
-		
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("ref_cursor", null);
+
 		borderService.selectBorder(paramMap);
 		
-		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");
-		model.addAttribute("borderlist",list);
+		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");		
+		model.addAttribute("borderlist", list);
 		
 		return "border/borderlist";
 	}
-
 	@RequestMapping(value="/borderView.do")
 	public String borderView(HttpServletRequest request,ModelMap model) throws Exception
 	{
-		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
-		HashMap<String,Object> paramMap = new HashMap<String,Object>();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		String no = request.getParameter("no").toString();
 		
 		paramMap.put("borderid", no);
-		paramMap.put("ref_cursor",null);
-		
+		paramMap.put("ref_cursor", null);
+
 		borderService.selectBorderView(paramMap);
 		
-		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");
-		
-		if(request.getSession().getAttribute("USER_ID") == null)
-		{
-			model.addAttribute("userId","");
-		}
-		else
-		{
-			model.addAttribute("userId",request.getSession().getAttribute("USER_ID").toString());
-		}
-		model.addAttribute("resultList",list);
+		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");		
+		model.addAttribute("resultList", list);
 		
 		return "border/borderview";
 	}
-
 
 	@RequestMapping(value="/borderReply.do")
 	public String borderReply(HttpServletRequest request,ModelMap model) throws Exception
 	{
 		String userId="";
-		String no="";
+		String no = "";
+		
 		//글쓰기권한 검사도 가능.
 		if(request.getSession().getAttribute("USER_ID") == null)
 		{
@@ -140,14 +130,14 @@ public class BorderController {
 		{
 			userId = request.getSession().getAttribute("USER_ID").toString();
 		}
-			
+		
 		no = request.getParameter("no").toString();
 		model.addAttribute("userId",userId);
 		model.addAttribute("no",no);
 		
 		return "border/borderreply";
 	}
-
+	
 	@RequestMapping(value="/borderReplyReq.do")
 	public String borderReplyReq(HttpServletRequest request,ModelMap model)throws Exception
 	{
@@ -167,6 +157,7 @@ public class BorderController {
 		//2000자이상이면
 		else if(mytextarea.length()>2000)
 		{
+
 			return "redirect:/borderList.do";
 		}
 		else if(request.getSession().getAttribute("USER_ID") == null)
@@ -177,7 +168,8 @@ public class BorderController {
 		else
 		{
 			userId = request.getSession().getAttribute("USER_ID").toString();
-			paramMap.put("borderid", no);
+			//borderView에서 borderid로 보냈기에 borderid로 통일
+			paramMap.put("borderid", no);	
 			paramMap.put("userId", userId);
 			paramMap.put("userIp", request.getRemoteAddr());
 			paramMap.put("title", title);

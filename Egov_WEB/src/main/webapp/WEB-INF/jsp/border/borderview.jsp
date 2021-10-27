@@ -3,28 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Document</title>
-    <script type="text/javascript">
-    function init()
-    {
-    	if("${resultList[0].NICKNAME}"=="${userId}")
-    	{
-    	}
-    	else
-    	{
-	    	$("#eidtbtn").hide();
-	    	$(".deletebtn").hide();
-    	}
-    	
-    }
-    
-    </script>
     <style>
         .mytable
         {
@@ -57,7 +39,7 @@
         }
     </style>
 </head>
-<body onload="init()">
+<body>
     <table class="mytable">
         <tr>
             <td class="td1">작성자</td>
@@ -73,9 +55,9 @@
         </tr>
         <tr>
             <td colspan="2" class="td4">
-            	<!-- javascript로 사용자에게 안보여지게 처리필요. -->
-                <a href="borderEdit.do?no=${resultList[0].BORDERID}" id="eidtbtn"><input type="button" value="수정"></a>
-                <a href="borderRemove.do?no=${resultList[0].BORDERID}" class="deletebtn"><input type="button" value="삭제"></a>
+            <!-- javascript로 사용자에게 안보여지게 처리필요. -->
+                <input type="button" value="수정">
+                <input type="button" value="삭제">
                 <a href="borderReply.do?no=${resultList[0].BORDERID}"><input type="button" value="답글"></a>
                 <a href="borderList.do"><input type="button" value="목록보기"></a>
             </td>
