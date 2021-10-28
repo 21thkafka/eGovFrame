@@ -108,7 +108,18 @@ public class BorderController {
 
 		borderService.selectBorderView(paramMap);
 		
-		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");		
+		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");
+		
+		if(request.getSession().getAttribute("USER_ID") == null)
+		{
+			model.addAttribute("userId", "");
+		}
+		else
+		{
+			model.addAttribute("userId", request.getSession().getAttribute("USER_ID").toString());
+
+		}
+		
 		model.addAttribute("resultList", list);
 		
 		return "border/borderview";
@@ -186,7 +197,8 @@ public class BorderController {
 	public String borderEdit(HttpServletRequest request,ModelMap model) throws Exception
 	{
 		String userId="";
-		String no="";
+		String no = "";
+		
 		//글쓰기권한 검사도 가능.
 		if(request.getSession().getAttribute("USER_ID") == null)
 		{
@@ -197,11 +209,10 @@ public class BorderController {
 		{
 			userId = request.getSession().getAttribute("USER_ID").toString();
 		}
-			
+		
 		no = request.getParameter("no").toString();
 		model.addAttribute("userId",userId);
 		model.addAttribute("no",no);
-		/*2가지방법 jsp로부터 받거나,서버에서 재조회*/
 		
 		return "border/borderedit";
 	}
@@ -225,6 +236,7 @@ public class BorderController {
 		//2000자이상이면
 		else if(mytextarea.length()>2000)
 		{
+
 			return "redirect:/borderList.do";
 		}
 		else if(request.getSession().getAttribute("USER_ID") == null)
@@ -235,7 +247,8 @@ public class BorderController {
 		else
 		{
 			userId = request.getSession().getAttribute("USER_ID").toString();
-			paramMap.put("borderid", no);
+			//borderView에서 borderid로 보냈기에 borderid로 통일
+			paramMap.put("borderid", no);	
 			paramMap.put("userId", userId);
 			paramMap.put("userIp", request.getRemoteAddr());
 			paramMap.put("title", title);
@@ -255,7 +268,7 @@ public class BorderController {
 		String userId= "";
 		String no = request.getParameter("no").toString();
 		
-		//javascript유효성을 앞서서 진행해주세요.
+		//javascript유효성을 앞서서 진행해주시고요.
 		if(request.getSession().getAttribute("USER_ID") == null)
 		{
 			request.getSession().invalidate();
@@ -264,9 +277,11 @@ public class BorderController {
 		else
 		{
 			userId = request.getSession().getAttribute("USER_ID").toString();
-			paramMap.put("borderid", no);
+			//borderView에서 borderid로 보냈기에 borderid로 통일
+			paramMap.put("borderid", no);	
 			paramMap.put("userId", userId);
 			paramMap.put("userIp", request.getRemoteAddr());
+
 		}
 		
 		borderService.updateBorderRemove(paramMap);
