@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egov.border.service.BorderService;
 import egov.main.service.MainService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class BorderController {
@@ -85,16 +86,41 @@ public class BorderController {
 	@RequestMapping(value="/borderList.do")
 	public String borderList(HttpServletRequest request,ModelMap model) throws Exception
 	{
-		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
-		HashMap<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("ref_cursor", null);
+	ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+	HashMap<String,Object> paramMap = new HashMap<String,Object>();
+	paramMap.put("ref_cursor",null);
 
-		borderService.selectBorder(paramMap);
-		
-		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");		
-		model.addAttribute("borderlist", list);
-		
-		return "border/borderlist";
+	//Start페이징처리
+	String pageNo="";
+	pageNo = request.getParameter("pageNo");
+	if(pageNo==null||pageNo.equals(""))
+	{
+	pageNo ="1";
+	}
+	PaginationInfo paginationInfo = new PaginationInfo();
+	paginationInfo.setCurrentPageNo(Integer.parseInt(pageNo)); //현재 페이지 번호
+	paginationInfo.setRecordCountPerPage(10); //한 페이지에 게시되는 게시물 건수
+	paginationInfo.setPageSize(10); //페이징 리스트의 사이즈ex:10입력<1>~<10>
+
+	int currentPageNo = paginationInfo.getCurrentPageNo();//현재페이지번호
+	int recordCountPerPage = paginationInfo.getRecordCountPerPage(); ////한 페이지에 게시되는 게시물 건수
+
+	paramMap.put("currentPageNo", currentPageNo);
+	paramMap.put("recordCountPerPage", recordCountPerPage );
+
+	borderService.selectBorder(paramMap);
+
+	    int listcount = 0;
+	    listcount= Integer.parseInt(paramMap.get("list_count").toString());
+	    paginationInfo.setTotalRecordCount(listcount); //전체 게시물 건 수
+	    //End페이징처리
+
+	list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");
+	model.addAttribute("borderlist",list);
+	 model.addAttribute("paginationInfo", paginationInfo);
+	model.addAttribute("pageNo",pageNo);
+
+	return "border/borderlist";
 	}
 	@RequestMapping(value="/borderView.do")
 	public String borderView(HttpServletRequest request,ModelMap model) throws Exception

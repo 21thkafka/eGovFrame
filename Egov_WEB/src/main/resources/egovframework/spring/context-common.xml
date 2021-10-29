@@ -47,5 +47,17 @@
 	
 	<bean id="antPathMater" class="org.springframework.util.AntPathMatcher" />
 	<bean id="defaultTraceHandler" class="egovframework.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
+	
+	<bean id="textRenderer" class="egov.lib.util.DefaultPaginationRenderer"/>
+	<bean id="imageRenderer" class="egov.lib.util.ImagePaginationRenderer"/>
+	
+	<bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+	<property name="rendererType">
+	<map>
+	<entry key="image" value-ref="imageRenderer"/>
+	<entry key="text" value-ref="textRenderer"/>
+	</map>
+	</property>
+	</bean>
 	 
 </beans>
