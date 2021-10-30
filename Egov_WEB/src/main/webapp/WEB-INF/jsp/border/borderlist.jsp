@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	function movePage(pageNo){
-		location.href="<%request.getContextPath();%>/borderList.do?pageNo=" + pageNo;
+		location.href="<%=request.getContextPath()%>/borderList.do?pageNo=" + pageNo;
 	}
 </script>
 <style>
@@ -73,12 +73,12 @@
 			<td>${map["SEECOUNT"]}</td>
 		</tr>
 		</c:forEach>
-		<tr>
-			<td colspan="5" style="text-align:center"></td>
+		<tr style="height:30px;">
+			<td colspan="5" style="text-align:center">
 			<ui:pagination paginationInfo = "${paginationInfo}"
 			type="image"
 			jsFunction="movePage"/>
-			
+			</td>
 		</tr>
 	</table>
 </body>

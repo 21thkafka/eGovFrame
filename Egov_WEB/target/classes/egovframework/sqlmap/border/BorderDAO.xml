@@ -10,10 +10,11 @@
    { CALL web_main.insertBorder(#{userId},#{userIp},#{title},#{mytextarea})}
    </select>
    
-	<!-- 게시판 조회-->
-   <select id="selectBorder" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-   { CALL web_main.selectBorder(#{ref_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=borderResultMap})}
+	<!-- 게시판 리스트 조회-->
+ 	<select id="selectBorder" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+   { CALL web_main.selectBorder(#{currentPageNo}, #{recordCountPerPage}, #{ref_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=borderResultMap}, #{list_count,javaType=INTEGER,mode=OUT,jdbcType=NUMERIC})}
    </select>
+
    
 	<!-- 게시판 조회-->
    <select id="selectBorderView" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
