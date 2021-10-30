@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <!--jstl 태그라이브러리 추가.-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 정부 라이브러리 추가 -->
-<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<!-- 페이징 라이브러리 추가 -->
+<%@ taglib prefix="mypage" uri="http://Egov_WEB/mypage"%>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -75,7 +75,7 @@
 		</c:forEach>
 		<tr style="height:30px;">
 			<td colspan="5" style="text-align:center">
-			<ui:pagination paginationInfo = "${paginationInfo}"
+			<mypage:pagination paginationInfo = "${paginationInfo}"
 			type="image"
 			jsFunction="movePage"/>
 			</td>

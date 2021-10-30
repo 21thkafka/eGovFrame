@@ -13,8 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egov.border.service.BorderService;
+import egov.lib.pagination.PaginationInfo;
 import egov.main.service.MainService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 
 @Controller
 public class BorderController {
