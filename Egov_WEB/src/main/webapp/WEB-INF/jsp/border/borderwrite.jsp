@@ -41,7 +41,7 @@
 </head>
 <body>
 <!-- 자신의 입맞에 맞게 게시판유형도 적어주시면 좋습니다. 예)커뮤니티,공유게시판..-->
-    <form action="borderInsert.do" method="post">
+    <form action="borderInsert.do" method="post" enctype="multipart/form-data">
     <table class="mytable">
         <tr>
             <td class="td1">작성자</td>
@@ -54,6 +54,10 @@
         <tr>
             <td class="td1 td3">내용</td>
             <td><textarea class="td2 mytextarea" name="mytextarea"></textarea></td>
+        </tr>
+        <tr>
+        	<td class="td1">파일</td>
+        	<td><input type="file" name="myfile"></td>
         </tr>
         <tr>
             <td colspan="2" class="td4">

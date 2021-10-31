@@ -7,7 +7,7 @@
    
 	<!-- 게시판 글쓰기-->
    <select id="insertBorder" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-   { CALL web_main.insertBorder(#{userId},#{userIp},#{title},#{mytextarea})}
+   { CALL web_main.insertBorder(#{userId},#{userIp},#{title},#{mytextarea}, #{filename}, #{filetype}, #{fileurl})}
    </select>
    
 	<!-- 게시판 리스트 조회-->

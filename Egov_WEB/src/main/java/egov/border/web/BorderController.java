@@ -1,7 +1,14 @@
 package egov.border.web;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egov.border.service.BorderService;
 import egov.lib.pagination.PaginationInfo;
-import egov.main.service.MainService;
+
 
 
 @Controller
@@ -23,6 +32,7 @@ public class BorderController {
 	private static final Logger logger = LoggerFactory.getLogger(BorderController.class);
 	
 	@Resource(name="BorderService") BorderService borderService;
+	@Resource(name="fileUploadProperty") Properties properties;
 	
 	@RequestMapping(value="/borderWrite.do")
 	public String borderWrite(HttpServletRequest request,ModelMap model)
@@ -78,6 +88,60 @@ public class BorderController {
 			paramMap.put("title", title);
 			paramMap.put("mytextarea", mytextarea);
 		}
+		
+		/*파일업로드 처리*/
+		String convertuid = "";
+		String uploadPath = properties.getProperty("file.uploadborderImg.path");
+		String originalEX = "";
+		String filePath = "";
+		
+		if(request instanceof MultipartHttpServletRequest){
+			final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+			final Map<String,MultipartFile> files = multiRequest.getFileMap();
+			
+			File saveFolder = new File(uploadPath);
+			if(!saveFolder.exists()||saveFolder.isFile()){
+				saveFolder.mkdirs();
+			}
+			
+			Iterator<Entry<String,MultipartFile>> itr = files.entrySet().iterator();
+			MultipartFile file;
+			
+			/*파일을 반복해서 읽어들임*/
+			while(itr.hasNext()){
+				Entry<String,MultipartFile> entry = itr.next();
+				file = entry.getValue();
+				
+				if(!"".equals(file.getOriginalFilename())){
+					/*용량파일 제한*/
+					int filesize = (int)file.getSize();
+					int maxSize = 1 * 1024 * 1024;
+					if(filesize>maxSize){
+						return "redirect:/borderWrite.do";
+					}
+					
+					Calendar cal = Calendar.getInstance();
+					int year = cal.get ( Calendar.YEAR );
+					int month = cal.get ( Calendar.MONTH ) + 1 ;
+					int date = cal.get ( Calendar.DATE ) ;
+					int hour = cal.get ( Calendar.HOUR_OF_DAY ) ;
+					
+					//서버에 저장할 파일이름
+					convertuid = UUID.randomUUID().toString().replace("-", "")+year+month+date+hour;
+					originalEX = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+					
+					convertuid = convertuid + "." + originalEX;
+					//서버의 파일 경로
+					filePath = uploadPath+convertuid;
+					file.transferTo(new File(filePath.replaceAll(" ", "")));
+					
+				}
+			}
+		}
+		paramMap.put("filename", convertuid);
+		paramMap.put("filetype", originalEX);
+		paramMap.put("fileurl","http://localhost:8080/Egov_WEB/borderView/image.do?file=" + convertuid);
+		
 		
 		borderService.insertBorder(paramMap);
 		
