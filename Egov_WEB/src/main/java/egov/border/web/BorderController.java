@@ -1,6 +1,8 @@
 package egov.border.web;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,8 +15,13 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -148,6 +155,50 @@ public class BorderController {
 		return "redirect:/borderList.do";
 	}
 
+
+	 //ResponseEntity<byte[]>대신에 AbstractView방법도 있습니다.
+	 @RequestMapping(value = "/borderView/image.do")
+	 public ResponseEntity<byte[]> imageshow(HttpServletRequest request, ModelMap model) throws Exception {
+	    request.setCharacterEncoding("UTF-8");
+	    
+	    String fileName="";
+	    fileName=request.getParameter("file").toString();
+	    
+	        String uploadPath = properties.getProperty("file.uploadborderImg.path");
+	   
+	        InputStream in = null;
+	        ResponseEntity<byte[]> entity = null;
+	        
+	        if(fileName.equals("")||fileName==null)
+	        {
+	        return null;
+	        }
+	        
+	        try {
+	            /*요청된 확장자를 제한할 수 있습니다.*/
+	        /*보안적인 요소를 더 추가할 수 있습니다.*/
+	        /*대용량을 다운로드 내보낼시 속도제어가 필요합니다.*/
+	        
+	            HttpHeaders headers = new HttpHeaders();
+	            in = new FileInputStream(uploadPath + fileName);
+
+	            //알려지지 않은 파일 타입.
+	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	            headers.add("Content-Disposition", "attatchment; filename=\"" + 
+	                    new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + 
+	                    "\"");
+	             
+	            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+	        } catch(Exception e) {
+	            e.printStackTrace();
+	            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+	        } finally {
+	            in.close();
+	        }
+	        
+	        return entity;
+	    }
+	
 	@RequestMapping(value="/borderList.do")
 	public String borderList(HttpServletRequest request,ModelMap model) throws Exception
 	{
