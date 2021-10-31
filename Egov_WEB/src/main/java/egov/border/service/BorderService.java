@@ -12,4 +12,5 @@ public interface BorderService {
 	void proctest(HashMap<String, Object> paramMap) throws Exception;
 	void proctest2(HashMap<String, Object> paramMap) throws Exception;
 	void procdo(HashMap<String, Object> paramMap) throws Exception;
+	void insertText(HashMap<String, Object> paramMap) throws Exception;
 }

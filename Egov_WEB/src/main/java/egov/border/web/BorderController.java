@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -444,4 +445,30 @@ public class BorderController {
 	
 		return "redirect:/borderList.do";
 	}
+	
+	@RequestMapping(value="/test.do")
+	public String test(HttpServletRequest request,ModelMap model) throws Exception{
+		return "border/test";
+	}
+	
+	//json 응답
+	@RequestMapping(value="/testajax.do", produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Map<String,Object> testajax(HttpServletRequest request,ModelMap model) throws Exception{
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+		HashMap<String,Object> paramMap = new HashMap<String,Object>();
+		HashMap<String,Object> resultMap = new HashMap<String,Object>();
+		
+		String mytext =request.getParameter("mytext").toString();
+		paramMap.put("mytext", mytext);
+		paramMap.put("ref_cursor", null);
+		borderService.insertText(paramMap);
+		
+		list = (ArrayList<HashMap<String,Object>>)paramMap.get("ref_cursor");
+		
+		list.get(0).put("STATUS", 1);
+		resultMap=list.get(0);
+		
+		return resultMap;
+	}	
 }

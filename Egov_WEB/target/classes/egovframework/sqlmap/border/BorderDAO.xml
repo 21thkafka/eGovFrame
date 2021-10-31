@@ -45,4 +45,9 @@
     <select id="proctest2" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
    { CALL web_main.proctest2(#{userId})}
    </select>
+   
+   <!-- json 테스트 -->
+   <select id="insertText" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+   { CALL web_main.insertText(#{mytext},#{ref_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=borderResultMap})}
+   </select>
 </mapper>

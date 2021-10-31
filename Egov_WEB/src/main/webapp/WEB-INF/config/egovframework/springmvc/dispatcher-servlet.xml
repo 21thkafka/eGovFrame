@@ -16,10 +16,32 @@
 	  <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 	
+<!--     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
+        </property>
+    </bean> --><!-- ajax, json을 사용하기 위해 주석처리 -->
+    <!-- ajax, json -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="webBindingInitializer">
             <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
         </property>
+        <!-- 알맞은 타입으로변경, 문자열형식 처리  -->
+        <property name="messageConverters">
+        <list>   
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/xml;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>       
+        <!-- json처리 -->    
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+        </list>
+        </property>                       
     </bean>
     
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
