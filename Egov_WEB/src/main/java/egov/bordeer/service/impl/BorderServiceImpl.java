@@ -44,4 +44,23 @@ public class BorderServiceImpl extends EgovAbstractServiceImpl implements Border
 	public void updateBorderRemove(HashMap<String, Object> paramMap) throws Exception {
 		borderDAO.updateBorderRemove(paramMap);
 	}
+
+	@Override
+	public void procdo(HashMap<String, Object> paramMap) throws Exception {
+		proctest(paramMap);
+		String id = paramMap.get("userId").toString()+"bca321";
+		paramMap.put("userId", id);
+		proctest2(paramMap);
+	}
+	
+	@Override
+	public void proctest(HashMap<String, Object> paramMap) throws Exception {
+		borderDAO.proctest(paramMap);
+		
+	}
+	@Override
+	public void proctest2(HashMap<String, Object> paramMap) throws Exception {
+		borderDAO.proctest2(paramMap);
+		
+	}
 }

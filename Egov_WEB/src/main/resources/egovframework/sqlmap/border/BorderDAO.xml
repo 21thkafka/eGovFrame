@@ -35,4 +35,14 @@
    <select id="updateBorderRemove" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
    { CALL web_main.updateBorderRemove(#{borderid},#{userId},#{userIp})}
    </select>
+   
+   	<!-- 트랜젝션-->
+   <select id="proctest" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+   { CALL web_main.proctest(#{userId})}
+   </select>
+   
+   <!-- 스프링 트랜잭션 -->
+    <select id="proctest2" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+   { CALL web_main.proctest2(#{userId})}
+   </select>
 </mapper>

@@ -9,4 +9,7 @@ public interface BorderService {
 	void insertBorderReply(HashMap<String, Object> paramMap) throws Exception;
 	void updateBorderEdit(HashMap<String, Object> paramMap) throws Exception;
 	void updateBorderRemove(HashMap<String, Object> paramMap) throws Exception;
+	void proctest(HashMap<String, Object> paramMap) throws Exception;
+	void proctest2(HashMap<String, Object> paramMap) throws Exception;
+	void procdo(HashMap<String, Object> paramMap) throws Exception;
 }
