@@ -14,8 +14,11 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -454,7 +457,7 @@ public class BorderController {
 	//json 응답
 	@RequestMapping(value="/testajax.do", produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String,Object> testajax(HttpServletRequest request,ModelMap model) throws Exception{
+	public String testajax(HttpServletRequest request,ModelMap model) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		HashMap<String,Object> paramMap = new HashMap<String,Object>();
 		HashMap<String,Object> resultMap = new HashMap<String,Object>();
@@ -469,6 +472,61 @@ public class BorderController {
 		list.get(0).put("STATUS", 1);
 		resultMap=list.get(0);
 		
-		return resultMap;
+		String jsonString = "{\"NAME\":\"abc123\",\"MYTEXT\":\"물고기\",\"mylist\":[{\"myarray\":1},{\"myarray2\":2}]}";
+		return jsonString;
 	}	
+	
+	//json 활용
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/testjson1.do")
+	@ResponseBody
+	public void testjson1(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("NAME", "abc123");
+		jsonObject.put("TEXT", "물고기");
+		
+		JSONObject jsonObject2 = new JSONObject();
+		jsonObject.put("array1", "1");
+		jsonObject.put("array2", 2);
+		jsonObject.put("array3", 3);		
+		
+		JSONObject jsonObject3 = new JSONObject();
+		jsonObject.put("array1", "4");
+		jsonObject.put("array2", 5);
+		jsonObject.put("array3", 6);
+		
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add(jsonObject2);
+		jsonArray.add(jsonObject3);
+		jsonObject.put("mylist", jsonArray);
+		
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json");
+		response.getWriter().print(jsonObject);
+	}
+	
+    @RequestMapping(value="/testjson2.do")
+	@ResponseBody
+	public void testjson2(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		HashMap<String,Object> hashMap = new HashMap<String,Object>();
+		hashMap.put("NAME","abc123");
+		hashMap.put("TEXT","물고기");
+		
+		HashMap<String,Object> hashMap2 = new HashMap<String,Object>();
+		hashMap2.put("array1","1");
+		hashMap2.put("array2",2);
+		hashMap2.put("array3",3);
+		JSONObject jsonObject2 =new JSONObject(hashMap2);
+		ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
+		jsonArray.add(jsonObject2);
+		
+		hashMap.put("mylist", jsonArray);
+		JSONObject jsonObject=new JSONObject(hashMap);
+	
+	    
+	    response.setCharacterEncoding("UTF-8");
+	    response.setContentType("application/json");
+	    response.getWriter().print(jsonObject);
+	}
+	
 }
