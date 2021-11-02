@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.XMLOutputter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -527,6 +530,41 @@ public class BorderController {
 	    response.setCharacterEncoding("UTF-8");
 	    response.setContentType("application/json");
 	    response.getWriter().print(jsonObject);
+	}
+    
+	@RequestMapping(value="/testxml.do")
+	public String testxml(HttpServletRequest request,ModelMap model) throws Exception{
+		return "border/testxml";
+	}
+	
+	@RequestMapping(value="/testXmlView.do")
+	public void testXmlView(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Document doc = new Document();
+		Element root = new Element("MYAnimal");
+		
+		root.setAttribute("category", "animal");
+		root.setAttribute("myName2", "abc2");
+		Element item1 = new Element("animal1");
+		item1.setText("코기리");
+		Element item2 = new Element("animal2");
+		item2.setText("토끼");
+		Element item3 = new Element("animal3");
+		item2.setText("고양이");
+		Element item4 = new Element("animal4");
+		Element item4_sub = new Element("animal5");
+		item4_sub.setText("물개");
+		
+		root.addContent(item1);
+		root.addContent(item2);
+		root.addContent(item3);
+		item4.addContent(item4_sub);
+		root.addContent(item4);
+		
+		doc.addContent(root);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/xml");
+		response.getWriter().print(new XMLOutputter().outputString(doc));
 	}
 	
 }
