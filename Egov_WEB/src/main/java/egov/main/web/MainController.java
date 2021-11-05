@@ -82,7 +82,7 @@ public class MainController {
 	}
 	*/
 	
-	@RequestMapping(value = "/login.do")
+	@RequestMapping(value = "/loginaa.do")
 	public String login(HttpServletRequest request,ModelMap model)
 	{
 		return "login/login";
